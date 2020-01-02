@@ -19,6 +19,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
+//SOCKET.IO CHAT
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
 // ROUTERS
 
 // 404 NOT FOUND HANDLER
@@ -33,8 +37,32 @@ app.use((err, req, res, next) => {
 });
 
 // INITIALIZE SERVER
-app.listen(PORT, () => {
-  console.log(`${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}`, `Server listening on port ${PORT}...`);
+// app.listen(PORT, () => {
+//   console.log(`${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })}`, `Server listening on port ${PORT}...`);
+// });
+
+
+/*** SOCKETS */
+io.on('connection', function(socket) {
+  let roomId;
+  console.log('a user connected');
+  socket.on('find room', function(venue) {
+    roomId = venue;
+    socket.join(roomId)
+  })
+  
+  socket.on('chat message', function(msg) {
+    console.log("msg: ", msg)
+    io.sockets.in(roomId).emit('chat message', msg);
+  })
+})
+
+io.on('disconnect', function() {
+  console.log('user disconnected');
 });
 
+//SERVER LISTEN
+http.listen(PORT, () => {
+  console.log(`Server Listening on PORT ${PORT}`);
+})
 module.exports = app;

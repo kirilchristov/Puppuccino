@@ -3,6 +3,7 @@ import axios from "axios";
 import Signout from "./Signout.jsx"
 import UserComponent from "./UserComponent.jsx"
 import DogComponent from "./DogComponent.jsx"
+import Chatroom from "./Chatroom.jsx"
 
 const AccountPage = props => {
     return (
@@ -10,6 +11,7 @@ const AccountPage = props => {
             <Signout />
             <UserComponent />
             <DogComponent />
+            <Chatroom />
         </div>
     )
 }
