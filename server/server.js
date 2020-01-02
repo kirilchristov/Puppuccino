@@ -24,6 +24,11 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 // ROUTERS
+const userRouter = require('./routers/userRouter');
+const chatRouter = require('./routers/chatRouter');
+app.use('/user', userRouter);
+app.use('/chat', chatRouter);
+
 
 // 404 NOT FOUND HANDLER
 app.use('*', (req, res) => {
